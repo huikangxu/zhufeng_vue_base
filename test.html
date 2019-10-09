@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+  </head>
+  <body>
+    <div v-text="text">(不能写内容)</div>
+    <input type="text" id="input"></input>
+    <input type="text" v-model="msg"></input>
+    <div>{{msg}}</div>
+    <div v-once>{{msg}}</div>
+    <script>
+      let obj = {}
+      let temp = {}
+      Object.defineProperty(obj, 'name', {
+        get () { // 取obj的name属性会触发get方法
+          return temp["name"]
+        },
+        set (val) { // 给obj赋值会触发get方法
+          temp["name"] = val
+          input.value = val // 4、将值赋给输入框
+        }
+      })
+      input.value = obj.name // 1、页面一加载时，会调用get方法
+      input.addEventListener('input', function () { // 2、等待输入框的变化
+        obj.name = this.value // 3、当值变化时会调用set方法
+      })
+      /*  
+      * defineProperty 参数
+        Object.defineProperty(obj, 'name', {
+          configurable: false, // 是否可删除
+          writable: false, // 是否可重新赋值
+          enumerable: false, // 是否可枚举
+          value: 1
+        })
+        delete obj.name
+        obj.name = 1000
+        for (let key in obj){
+          console.log(key)
+        }
+      */
+    </script>
+  </body>
+</html>
